@@ -1,6 +1,10 @@
 class dconf(
 
 ) {
+    package { "dconf-tools":
+        ensure => installed
+    }
+    ->
     file { "/etc/dconf/":
         ensure => directory,
         mode => 755,
@@ -34,8 +38,14 @@ class dconf(
         ensure => directory,
         mode => 755,
         owner => root,
-        group => root,
-        notify => Exec["dconf-update"]
+        group => root
+    }
+    ->
+    file { "/etc/dconf/db/local.d/locks":
+        ensure => directory,
+        mode => 755,
+        owner => root,
+        group => root
     }
     ->
     exec { "dconf-update":
@@ -43,11 +53,11 @@ class dconf(
         refreshonly => true
     }
 
-    file { "/usr/local/bin/reset-account":
+    file { "/usr/bin/dconf-reset-account":
         ensure => present,
         mode => 755,
         owner => root,
         group => root,
-        source => "puppet:///modules/lauri-koodur/koodur-workstation/usr/local/bin/reset-account"
+        source => "puppet:///modules/dconf/reset-account"
     }
 }

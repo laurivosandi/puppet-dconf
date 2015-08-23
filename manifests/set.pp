@@ -13,6 +13,8 @@ define dconf::set(
   }
 
   if ! defined(File["/etc/dconf/db/local.d/locks/$group"]) {
+    File["/etc/dconf/db/local.d/locks"]
+    ->
     file { "/etc/dconf/db/local.d/locks/$group":
       ensure => present,
       mode => 644,
@@ -31,6 +33,8 @@ define dconf::set(
   ~>
   Exec["dconf-update"]
 
+  File["/etc/dconf/db/local.d"]
+  ->
   ini_setting { "$title":
     ensure => present,
     path => "/etc/dconf/db/local.d/$group",

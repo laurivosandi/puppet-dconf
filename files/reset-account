@@ -1,0 +1,17 @@
+#!/bin/bash
+
+killall firefox
+
+echo "Resetting dconf"
+killall dconf-service
+rm ~/.config/dconf/user
+
+echo "Restarting MATE apps..."
+killall mate-panel
+marco --replace &
+
+echo "Resetting file associations..."
+rm -fv ~/.local/share/applications/mimeapps.list
+
+echo "Resetting Firefox file associations..."
+rm -fv ~/.mozilla/firefox/*/mimeTypes.rdf
